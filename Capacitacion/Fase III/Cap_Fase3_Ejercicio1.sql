@@ -9,6 +9,7 @@ and year(date(dt))=2022 -- filtro para extraer únicamente los datos del 2022
 ,interactions as(
 select distinct date_trunc('month',date(INTERACTION_START_TIME)) as month,account_id,interaction_id
 from "db-stage-prod"."interactions_cwp"
+where interaction_purpose_descrip='CLAIM' -- filtro para considerar únicamente reclamos
 )
 ,interactions_per_user as(
 select distinct a.month,act_acct_cd,count(distinct interaction_id) as interactions 
