@@ -4,6 +4,7 @@ SELECT distinct date_trunc('month',date(dt)) as month,act_acct_cd
 FROM "db-analytics-prod"."fixed_cwp" 
 where act_cust_typ_nm = 'Residencial' -- filtro para clientes residenciales
 and year(date(dt))=2022 -- filtro para extraer únicamente los datos del 2022
+and (fi_outst_age<90 or fi_outst_age is null) -- filtro para usuarios sin morosidad
 )
 ,interactions as(
 select distinct date_trunc('month',date(INTERACTION_START_TIME)) as month,account_id,interaction_id
