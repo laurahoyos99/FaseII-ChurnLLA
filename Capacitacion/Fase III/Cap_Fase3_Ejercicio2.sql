@@ -8,10 +8,11 @@ and (fi_outst_age<90 or fi_outst_age is null) -- filtro para usuarois sin morosi
 )
 ,first_value_last_day as(
 select distinct *
-,first_value(date) over(partition by act_acct_cd,month order by date desc) as Last_DNA_Date
---encuentra la última fecha en la que aparece cada contrato cada mes
+,first_value(date) over(partition by act_acct_cd order by date desc) as Last_DNA_Date
+--encuentra la última fecha en la que aparece cada contrato en el DNA activo
 from active_users
 )
-select distinct month,Last_DNA_Date,count(distinct act_acct_cd) as Users
+select distinct Last_DNA_Date,count(distinct act_acct_cd) as Users
 from first_value_last_day
-group by 1,2 order by 1,2
+where date_trunc('month',Last_DNA_Date) in(date('2022-07-01'),date('2022-08-01'))
+group by 1 order by 1
